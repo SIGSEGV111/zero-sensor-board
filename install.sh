@@ -26,10 +26,12 @@ sed -i "2i$RUNNER &" "$INITSCRIPT"
 
 mkdir -p "/etc/zsb"
 touch "/etc/zsb/location"
+touch "/etc/zsb/postgres"
 
 echo
 echo "all done!"
 echo
 echo "*** do not forget to set this boards location in /etc/zsb/location ***"
+echo "*** if required specify the connect string in /etc/zsb/postgres ***"
 echo
 echo
