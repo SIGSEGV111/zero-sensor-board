@@ -1,0 +1,9 @@
+[submodule "sds011-driver"]
+	path = sds011-driver
+	url = https://github.com/SIGSEGV111/sds011-driver.git
+[submodule "vz89te-driver"]
+	path = vz89te-driver
+	url = https://github.com/SIGSEGV111/vz89te-driver.git
+[submodule "postgres-feeder"]
+	path = postgres-feeder
+	url = https://github.com/SIGSEGV111/postgres-feeder.git
