@@ -33,7 +33,7 @@ if test -z "$LOCATION"; then
 fi
 
 # kill child processes if this script is SIGTERM'ed
-trap "set -x; set +e; pgrep -a -P $$ 1>&2; pkill -P $$; exit 0" TERM EXIT QUIT HUP INT
+trap "set -x; set +e; pgrep -a -P $$ 1>&2; pkill -P $$; trap '' EXIT; exit 0" TERM EXIT QUIT HUP INT
 
 echo "[INFO] $(date) zero sensor board @ '$LOCATION' starting up" 1>&2
 
