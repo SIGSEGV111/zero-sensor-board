@@ -14,8 +14,8 @@ echo "[INFO] $(date) logging to /var/log/zsb.log" 1>&2
 exec 2>/var/log/zsb.log
 
 # buffer file
+exec 0</dev/null
 exec 1>>/tmp/zsb.csv
-exec 0</tmp/zsb.csv
 
 # change working dir
 readonly P="$(dirname "$(readlink -f "$0")")"
@@ -42,6 +42,8 @@ echo "[INFO] $(date) zero sensor board @ '$LOCATION' starting up" 1>&2
 #./restart.sh ./bme280-driver/bme280-csv "/dev/i2c-1" "$LOCATION" &
 #./restart.sh ./opt3001-driver/opt3001-csv "/dev/i2c-1" "$LOCATION" &
 
-./restart.sh ./postgres-feeder/postgres-feeder "sensor_data" "$POSTGRES" &
+if test -e /etc/zsb/keytab; then kinit -p zsb -V -k -t /etc/zsb/keytab; fi
+
+./restart.sh ./postgres-feeder/postgres-feeder "sensor_data" "$POSTGRES" </tmp/zsb.csv >/dev/null &
 
 wait
