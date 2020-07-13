@@ -7,3 +7,6 @@
 [submodule "postgres-feeder"]
 	path = postgres-feeder
 	url = https://github.com/SIGSEGV111/postgres-feeder.git
+[submodule "opt3001-driver"]
+	path = opt3001-driver
+	url = https://github.com/SIGSEGV111/opt3001-driver.git
