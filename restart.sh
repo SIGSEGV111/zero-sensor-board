@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -u
 set +e
 
 # kill child processes if this script is SIGTERM'ed
@@ -10,7 +9,7 @@ for ((;;)); do
 	echo "[INFO] $(date) starting '$1' '$2' '$3'" 1>&2
 
 	# you do not want to know why this ugly construct is necessary...
-	"$1" "$2" "$3" 0<&0 &
+	"$1" "$2" "$3" $4 0<&0 1>&1 &
 	wait
 
 	echo "[WARN] $(date) '$1' exited with code=$?" 1>&2

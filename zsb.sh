@@ -40,7 +40,7 @@ echo "[INFO] $(date) zero sensor board @ '$LOCATION' starting up" 1>&2
 ./restart.sh ./sds011-driver/sds011-csv "/dev/ttyS0" "$LOCATION" &
 ./restart.sh ./vz89te-driver/vz89te-csv "/dev/i2c-1" "$LOCATION" &
 #./restart.sh ./bme280-driver/bme280-csv "/dev/i2c-1" "$LOCATION" &
-./restart.sh ./opt3001-driver/opt3001-csv "/dev/i2c-1" "$LOCATION" &
+./restart.sh ./opt3001-driver/opt3001-csv "/dev/i2c-1" "$LOCATION" 5 &
 
 if test -e /etc/zsb/keytab; then kinit -p zsb -V -k -t /etc/zsb/keytab; fi
 
