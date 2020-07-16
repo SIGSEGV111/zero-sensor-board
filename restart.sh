@@ -11,8 +11,9 @@ for ((;;)); do
 	# you do not want to know why this ugly construct is necessary...
 	"$1" "$2" "$3" $4 0<>/tmp/zsb.csv 1>>/tmp/zsb.csv &
 	wait
+	code=$?
 
-	echo "[WARN] $(date) '$1' exited with code=$?" 1>&2
+	echo "[WARN] $(date) '$1' exited with code=$code" 1>&2
 	echo "[INFO] $(date) will restart '$1' in 10s ..." 1>&2
 	sleep 10
 done
