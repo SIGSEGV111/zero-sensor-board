@@ -13,3 +13,6 @@
 [submodule "bme280-driver"]
 	path = bme280-driver
 	url = https://github.com/SIGSEGV111/bme280-driver.git
+[submodule "dht22-spi-driver"]
+	path = dht22-spi-driver
+	url = https://github.com/SIGSEGV111/dht22-spi-driver.git
