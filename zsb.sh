@@ -37,7 +37,7 @@ trap "set -x; set +e; pgrep -a -P $$ 1>&2; pkill -P $$; trap '' EXIT; exit 0" TE
 echo "[INFO] $(date) zero sensor board @ '$LOCATION' starting up" 1>&2
 
 ./restart.sh ./bme280-driver/bme280-csv "/dev/i2c-1" "$LOCATION" &
-./restart.sh ./dht22-spi-driver/dht22-csv "/dev/spidev0.0" "$LOCATION" &
+./restart.sh ./dht22-spi-driver/dht22-csv "/dev/spidev0.1" "$LOCATION" &
 ./restart.sh ./opt3001-driver/opt3001-csv "/dev/i2c-1" "$LOCATION" 5 &
 ./restart.sh ./sds011-driver/sds011-csv "/dev/ttyS0" "$LOCATION" &
 ./restart.sh ./vz89te-driver/vz89te-csv "/dev/i2c-1" "$LOCATION" &
