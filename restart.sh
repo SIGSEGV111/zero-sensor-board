@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if ! test -x "$1"; then
-	echo "[WARN] program '$1' does not exist, assuming this is intentional and exiting without error"
+	echo "[WARN] program '$1' does not exist (or is not executeable), assuming this is intentional and exiting without error"
 	exit 0
 fi
 

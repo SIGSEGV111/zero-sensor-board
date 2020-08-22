@@ -16,3 +16,9 @@
 [submodule "dht22-spi-driver"]
 	path = dht22-spi-driver
 	url = https://github.com/SIGSEGV111/dht22-spi-driver.git
+[submodule "mlx90614-driver"]
+	path = mlx90614-driver
+	url = https://github.com/SIGSEGV111/mlx90614-driver.git
+[submodule "ds1820-sysfs-poller"]
+	path = ds1820-sysfs-poller
+	url = https://github.com/SIGSEGV111/ds1820-sysfs-poller.git
