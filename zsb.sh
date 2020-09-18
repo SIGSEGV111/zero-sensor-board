@@ -4,7 +4,7 @@ set -eu
 
 # acquire lock
 exec 3>>/tmp/zsb.lock
-if ! flock --exclusive 3; then
+if ! flock --nonblock --exclusive 3; then
 	echo "[WARN] $(date) script already running" 1>&2
 	exit 2
 fi
