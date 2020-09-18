@@ -1,31 +1,41 @@
-#!/bin/bash -eu
+#!/bin/bash -u
 
 # disable the green LED
 echo none > /sys/devices/platform/leds/leds/led0/trigger
-echo 255 > /sys/devices/platform/leds/leds/led0/brightness
 
-# blink the LED every time there is a new log message
-
-function off()
+function on()
 {
 	echo 255 > /sys/devices/platform/leds/leds/led0/brightness
 }
 
-function on()
+function off()
 {
 	echo 0 > /sys/devices/platform/leds/leds/led0/brightness
 }
 
+function sleep100ms()
+{
+	read -t 0.1
+}
+
 function blink()
 {
-	for ((i=0;i<3;i++)); do
+	# blink for 10s
+	for ((i=0;i<50;i++)); do
 		on
-		sleep 0.1
+		sleep100ms
 		off
-		sleep 0.1
+		sleep100ms
 	done
 }
 
-tail -c 0 -f /var/log/zsb.log | while read -r msg; do
-	blink
+rm -f /tmp/ledd.fifo
+mkfifo /tmp/ledd.fifo
+off
+
+# blink the LED every time there is a new log message
+tail -c 0 -f /var/log/zsb.log | for ((;;)); do
+	read -r line
+	blink <>/tmp/ledd.fifo
+	while read -r -t 0.1 line; do continue; done
 done
