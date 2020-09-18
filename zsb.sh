@@ -23,9 +23,23 @@ cd "$P"
 # load i2c interface module
 modprobe i2c-dev || true
 
+# run the LED daemon
+./ledd.sh &
+
+# login to kerberos if required
+if test -e "/etc/zsb/keytab"; then
+	./krenewd.sh "zsb" "/etc/zsb/keytab" &
+
+	# wait 10s to give krenewd a chance to acquire a ticket
+	# this prevents errors/warnings about missing/invalid ticket
+	# in the logs during startup
+	sleep 10
+fi
+
 # read config
 set +e
 read POSTGRES < /etc/zsb/postgres
+readonly POSTGRES
 set -e
 read LOCATION < /etc/zsb/location
 readonly LOCATION
@@ -44,6 +58,7 @@ echo 26 > /sys/class/gpio/export || true # this might fail if the PIN was alread
 echo out > /sys/class/gpio/gpio26/direction
 echo 1 > /sys/class/gpio/gpio26/value
 
+# run the sensor drivers and database feeder
 ./restart.sh ./bme280-driver/bme280-csv "/dev/i2c-1" "$LOCATION" &
 ./restart.sh ./dht22-spi-driver/dht22-csv "/dev/spidev0.1" "$LOCATION" &
 ./restart.sh ./opt3001-driver/opt3001-csv "/dev/i2c-1" "$LOCATION" 19 &
