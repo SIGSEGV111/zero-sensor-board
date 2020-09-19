@@ -54,7 +54,7 @@ fi
 
 if (($UID != 0)); then die "need root powers"; fi
 if ! test -b "$BLKDEV"; then die "arg[1] must be a block-device (sdcard)"; fi
-if ! test -f "$OS_IMAGE"; then die "arg[2] must be a image-file (Raspbian or SuSE)"; fi
+if ! test -f "$OS_IMAGE"; then die "arg[2] must be a image-file (Raspbian)"; fi
 if test -z "$HOSTNAME_SUFFIX"; then die "arg[3] must be the suffic for the DNS name"; fi
 if test -z "$LOCATION"; then die "arg[4] must be the name of the location (room) where the board will be placed"; fi
 if test -z "$SSID"; then die "arg[6] must be the SSID of your wireless network"; fi
@@ -81,10 +81,12 @@ mount "${BLKDEV}1" "$mp"
 sed -i 's/console=serial0,115200\W//g' "$mp/cmdline.txt"
 
 cat >> "$mp/config.txt" << EOF
+enable_uart=1
 dtparam=i2c_arm=on
 dtparam=spi=on
 dtparam=act_led_trigger=none
 dtoverlay=disable-bt
+dtoverlay=w1-gpio,gpiopin=6
 EOF
 
 umount --recursive "$mp"
@@ -122,7 +124,9 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 AllowUsers root
 EOF
 
-readonly ROOT_PASSWORD="$(head -c 12 /dev/urandom | base64)"
+readonly ROOT_PASSWORD="$(head -c 3 /dev/random | base64)"
+
+if test -e /etc/krb5.conf; then cp /etc/krb5.conf "$mp/etc/krb5.conf"; fi
 
 rm -f "$mp/etc/wpa_supplicant/wpa_supplicant.conf"
 cat >> "$mp/etc/wpa_supplicant/wpa_supplicant.conf" << EOF
@@ -135,7 +139,7 @@ echo "**************************************************************************
 chroot "$mp" /bin/bash -eus << EOF
 wpa_passphrase '$SSID' '$PASSWORD' | grep -vF '#psk=' >> '/etc/wpa_supplicant/wpa_supplicant.conf'
 apt update
-apt install -y libpq-dev
+apt install -y libpq-dev krb5-user
 cd /opt/zsb
 ./compile.sh
 ./install.sh
