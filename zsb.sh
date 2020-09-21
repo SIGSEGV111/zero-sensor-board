@@ -57,12 +57,13 @@ echo "[INFO] $(date) zero sensor board @ '$LOCATION' starting up" 1>&2
 echo 26 > /sys/class/gpio/export || true # this might fail if the PIN was already exported before
 echo out > /sys/class/gpio/gpio26/direction
 echo 1 > /sys/class/gpio/gpio26/value
+sleep 1
 
 # run the sensor drivers and database feeder
 ./restart.sh ./bme280-driver/bme280-csv "/dev/i2c-1" "$LOCATION" &
 ./restart.sh ./dht22-spi-driver/dht22-csv "/dev/spidev0.1" "$LOCATION" &
 ./restart.sh ./opt3001-driver/opt3001-csv "/dev/i2c-1" "$LOCATION" 19 &
-./restart.sh ./sds011-driver/sds011-csv "/dev/ttyS0" "$LOCATION" &
+./restart.sh ./sds011-driver/sds011-csv "/dev/serial0" "$LOCATION" &
 ./restart.sh ./vz89te-driver/vz89te-csv "/dev/i2c-1" "$LOCATION" &
 ./restart.sh ./mlx90614-driver/mlx90614-csv "/dev/i2c-1" "$LOCATION" &
 ./restart.sh ./ds1820-sysfs-poller/ds1820-csv "$LOCATION" &
